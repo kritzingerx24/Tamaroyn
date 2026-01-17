@@ -1,0 +1,173 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://game/ui/widgets/WeaponPanel.gd" id="1_wp"]
+[ext_resource type="Script" path="res://game/ui/widgets/WulframBar.gd" id="2_bar"]
+
+[node name="WeaponPanel" type="Control"]
+custom_minimum_size = Vector2(360, 120)
+script = ExtResource("1_wp")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+theme_override_constants/separation = 4
+
+[node name="Primary" type="HBoxContainer" parent="VBox"]
+theme_override_constants/separation = 6
+
+[node name="Key" type="Label" parent="VBox/Primary"]
+custom_minimum_size = Vector2(34, 0)
+theme_override_font_sizes/font_size = 14
+text = "LMB"
+
+[node name="Icon" type="TextureRect" parent="VBox/Primary"]
+custom_minimum_size = Vector2(20, 20)
+expand_mode = 1
+stretch_mode = 4
+texture_filter = 1
+
+[node name="Name" type="Label" parent="VBox/Primary"]
+custom_minimum_size = Vector2(80, 0)
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
+text = "AUTOCANNON"
+
+[node name="Bar" type="Control" parent="VBox/Primary"]
+custom_minimum_size = Vector2(60, 14)
+size_flags_horizontal = 3
+script = ExtResource("2_bar")
+
+[node name="State" type="Label" parent="VBox/Primary"]
+custom_minimum_size = Vector2(52, 0)
+horizontal_alignment = 2
+theme_override_font_sizes/font_size = 14
+text = "READY"
+
+[node name="Secondary" type="HBoxContainer" parent="VBox"]
+theme_override_constants/separation = 6
+
+[node name="Key" type="Label" parent="VBox/Secondary"]
+custom_minimum_size = Vector2(34, 0)
+theme_override_font_sizes/font_size = 14
+text = "RMB"
+
+[node name="Icon" type="TextureRect" parent="VBox/Secondary"]
+custom_minimum_size = Vector2(20, 20)
+expand_mode = 1
+stretch_mode = 4
+texture_filter = 1
+
+[node name="Name" type="Label" parent="VBox/Secondary"]
+custom_minimum_size = Vector2(80, 0)
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
+text = "PULSE"
+
+[node name="Bar" type="Control" parent="VBox/Secondary"]
+custom_minimum_size = Vector2(60, 14)
+size_flags_horizontal = 3
+script = ExtResource("2_bar")
+
+[node name="State" type="Label" parent="VBox/Secondary"]
+custom_minimum_size = Vector2(52, 0)
+horizontal_alignment = 2
+theme_override_font_sizes/font_size = 14
+text = "READY"
+
+[node name="Hunter" type="HBoxContainer" parent="VBox"]
+theme_override_constants/separation = 6
+
+[node name="Key" type="Label" parent="VBox/Hunter"]
+custom_minimum_size = Vector2(34, 0)
+theme_override_font_sizes/font_size = 14
+text = "E"
+
+[node name="Icon" type="TextureRect" parent="VBox/Hunter"]
+custom_minimum_size = Vector2(20, 20)
+expand_mode = 1
+stretch_mode = 4
+texture_filter = 1
+
+[node name="Name" type="Label" parent="VBox/Hunter"]
+custom_minimum_size = Vector2(80, 0)
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
+text = "HUNTER"
+
+[node name="Bar" type="Control" parent="VBox/Hunter"]
+custom_minimum_size = Vector2(60, 14)
+size_flags_horizontal = 3
+script = ExtResource("2_bar")
+
+[node name="State" type="Label" parent="VBox/Hunter"]
+custom_minimum_size = Vector2(52, 0)
+horizontal_alignment = 2
+theme_override_font_sizes/font_size = 14
+text = "NO TGT"
+
+[node name="Flare" type="HBoxContainer" parent="VBox"]
+theme_override_constants/separation = 6
+
+[node name="Key" type="Label" parent="VBox/Flare"]
+custom_minimum_size = Vector2(34, 0)
+theme_override_font_sizes/font_size = 14
+text = "F"
+
+[node name="Icon" type="TextureRect" parent="VBox/Flare"]
+custom_minimum_size = Vector2(20, 20)
+expand_mode = 1
+stretch_mode = 4
+texture_filter = 1
+
+[node name="Name" type="Label" parent="VBox/Flare"]
+custom_minimum_size = Vector2(80, 0)
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
+text = "FLARE"
+
+[node name="Bar" type="Control" parent="VBox/Flare"]
+custom_minimum_size = Vector2(60, 14)
+size_flags_horizontal = 3
+script = ExtResource("2_bar")
+
+[node name="State" type="Label" parent="VBox/Flare"]
+custom_minimum_size = Vector2(52, 0)
+horizontal_alignment = 2
+theme_override_font_sizes/font_size = 14
+text = "READY"
+
+[node name="Mine" type="HBoxContainer" parent="VBox"]
+theme_override_constants/separation = 6
+
+[node name="Key" type="Label" parent="VBox/Mine"]
+custom_minimum_size = Vector2(34, 0)
+theme_override_font_sizes/font_size = 14
+text = "G"
+
+[node name="Icon" type="TextureRect" parent="VBox/Mine"]
+custom_minimum_size = Vector2(20, 20)
+expand_mode = 1
+stretch_mode = 4
+texture_filter = 1
+
+[node name="Name" type="Label" parent="VBox/Mine"]
+custom_minimum_size = Vector2(80, 0)
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
+text = "MINE"
+
+[node name="Bar" type="Control" parent="VBox/Mine"]
+custom_minimum_size = Vector2(60, 14)
+size_flags_horizontal = 3
+script = ExtResource("2_bar")
+
+[node name="State" type="Label" parent="VBox/Mine"]
+custom_minimum_size = Vector2(52, 0)
+horizontal_alignment = 2
+theme_override_font_sizes/font_size = 14
+text = "READY"

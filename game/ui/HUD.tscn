@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game/ui/HUD.gd" id="1_hud"]
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_hud")
+
+[node name="Margin" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = -12.0
+
+[node name="VBox" type="VBoxContainer" parent="Margin"]
+
+[node name="Status" type="Label" parent="Margin/VBox"]
+text = "Status"
+
+[node name="Toast" type="Label" parent="Margin/VBox"]
+visible = false
+text = "Toast"
+
+[node name="Help" type="Label" parent="Margin/VBox"]
+text = "Help"
