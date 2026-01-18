@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://c8j2x4q8q8q"]
+[ext_resource type="Script" path="res://scripts/projectile.gd" id="1_p"]
+[sub_resource type="StandardMaterial3D" id="m"]
+albedo_color = Color(1, 1, 0, 1)
+emission_enabled = true
+emission = Color(1, 0.5, 0, 1)
+[sub_resource type="SphereShape3D" id="s"]
+radius = 0.2
+[node name="Projectile" type="RigidBody3D"]
+collision_layer = 4
+collision_mask = 9
+gravity_scale = 0.0
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("1_p")
+[node name="M" type="MeshInstance3D" parent="."]
+mesh = SubResource("1")
+[node name="C" type="CollisionShape3D" parent="."]
+shape = SubResource("s")
+[sub_resource type="SphereMesh" id="1"]
+material = SubResource("m")
+radius = 0.1
+height = 0.2
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

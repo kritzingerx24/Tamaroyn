@@ -1,0 +1,97 @@
+[gd_scene load_steps=15 format=3 uid="uid://b8j2x4q8q8q"]
+
+[ext_resource type="Script" path="res://scripts/tank_controller.gd" id="1_tank"]
+[ext_resource type="Script" path="res://scripts/camera_chase.gd" id="2_cam"]
+[ext_resource type="Script" path="res://scripts/weapon_system.gd" id="3_wep"]
+[ext_resource type="Script" path="res://scripts/uplink_manager.gd" id="4_uplink"]
+[ext_resource type="Script" path="res://scripts/terrain_gen.gd" id="5_terr"]
+[ext_resource type="Script" path="res://scripts/sky_system.gd" id="6_sky"]
+[ext_resource type="PackedScene" uid="uid://tankmesh002" path="res://assets/models/tank_mesh_v2.tscn" id="7_visuals"]
+[ext_resource type="PackedScene" uid="uid://cockpithud" path="res://scenes/ui_cockpit.tscn" id="8_hud"]
+[ext_resource type="PackedScene" uid="uid://c8j2x4q8q8q" path="res://scenes/projectile.tscn" id="9_proj"]
+[ext_resource type="PackedScene" uid="uid://dropship001" path="res://assets/models/dropship.tscn" id="10_ship"]
+[ext_resource type="PackedScene" uid="uid://p1w3rC3ll" path="res://scenes/power_cell.tscn" id="11_pc"]
+[ext_resource type="PackedScene" uid="uid://turr3tB4s3" path="res://scenes/turret.tscn" id="12_tur"]
+[ext_resource type="PackedScene" uid="uid://r3p4irP4d" path="res://scenes/repair_pad.tscn" id="13_rep"]
+[ext_resource type="Shader" path="res://assets/shaders/grid_terrain.gdshader" id="14_shd"]
+
+[sub_resource type="ShaderMaterial" id="mat_grid"]
+render_priority = 0
+shader = ExtResource("14_shd")
+shader_parameter/grid_color = Color(0, 1, 0.2, 1)
+shader_parameter/ground_color = Color(0.05, 0.05, 0.05, 1)
+shader_parameter/grid_scale = 10.0
+shader_parameter/line_thickness = 0.05
+
+[sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
+sky_top_color = Color(0.1, 0, 0.2, 1)
+sky_horizon_color = Color(0.8, 0.4, 0.1, 1)
+ground_bottom_color = Color(0.1, 0.1, 0.1, 1)
+ground_horizon_color = Color(0.8, 0.4, 0.1, 1)
+
+[sub_resource type="Sky" id="sky"]
+sky_material = SubResource("sky_mat")
+
+[sub_resource type="Environment" id="env"]
+background_mode = 2
+sky = SubResource("sky")
+ambient_light_source = 3
+reflected_light_source = 2
+tonemap_mode = 2
+glow_enabled = true
+glow_intensity = 1.5
+fog_enabled = true
+fog_light_color = Color(0.1, 0.1, 0.1, 1)
+fog_density = 0.005
+
+[sub_resource type="BoxShape3D" id="shape_tank"]
+size = Vector3(2.5, 1, 4)
+
+[node name="World" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("env")
+script = ExtResource("6_sky")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 0, 20, 0)
+shadow_enabled = true
+
+[node name="Terrain" type="StaticBody3D" parent="."]
+collision_mask = 7
+script = ExtResource("5_terr")
+material = SubResource("mat_grid")
+
+[node name="PlayerTank" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
+collision_layer = 2
+collision_mask = 9
+script = ExtResource("1_tank")
+
+[node name="Visuals" parent="PlayerTank" instance=ExtResource("7_visuals")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerTank"]
+shape = SubResource("shape_tank")
+
+[node name="SuspensionRay" type="RayCast3D" parent="PlayerTank"]
+target_position = Vector3(0, -5, 0)
+
+[node name="WeaponSystem" type="Node3D" parent="PlayerTank" node_paths=PackedStringArray("muzzle_point")]
+script = ExtResource("3_wep")
+projectile_scene = ExtResource("9_proj")
+muzzle_point = NodePath("../Visuals/TurretPivot/MuzzlePoint")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.906308, 0.422618, 0, -0.422618, 0.906308, 0, 8, 12)
+script = ExtResource("2_cam")
+target_path = NodePath("../PlayerTank")
+
+[node name="UplinkManager" type="Node3D" parent="."]
+script = ExtResource("4_uplink")
+tank_path = NodePath("../PlayerTank")
+dropship_scene = ExtResource("10_ship")
+buildings = Array[PackedScene]([ExtResource("11_pc"), ExtResource("12_tur"), ExtResource("13_rep")])
+
+[node name="HUD" parent="." instance=ExtResource("8_hud")]
+
+[connection signal="menu_toggled" from="UplinkManager" to="HUD/BottomBar/Label" method="set_visible"]

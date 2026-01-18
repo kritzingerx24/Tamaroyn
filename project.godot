@@ -1,0 +1,60 @@
+[config]
+
+name="Tamaroyn Phase 5"
+description="Phase 5: High Fidelity Visuals & Terrain"
+run/main_scene="res://scenes/test_arena_phase5.tscn"
+features=PackedStringArray("4.3", "Forward Plus")
+
+[input]
+
+move_forward={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"physical_keycode":87,"script":null)]
+}
+move_backward={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"physical_keycode":83,"script":null)]
+}
+turn_left={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"physical_keycode":65,"script":null)]
+}
+turn_right={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"physical_keycode":68,"script":null)]
+}
+jump_jets={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"physical_keycode":32,"script":null)]
+}
+fire_primary={
+"deadzone": 0.5,
+"events": [Object(InputEventMouseButton,"button_mask":1,"button_index":1,"script":null)]
+}
+select_weapon_1={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"keycode":49,"script":null)]
+}
+select_weapon_2={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"keycode":50,"script":null)]
+}
+select_weapon_3={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"keycode":51,"script":null)]
+}
+toggle_uplink={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"keycode":66,"script":null)]
+}
+cycle_sky={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"keycode":4194332,"script":null)]
+}
+
+[layer_names]
+3d_physics/layer_1="World"
+3d_physics/layer_2="Player"
+3d_physics/layer_3="Projectile"
+3d_physics/layer_4="Enemy"
+3d_physics/layer_5="Power"

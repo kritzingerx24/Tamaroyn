@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://p1w3rC3ll"]
+[ext_resource type="Script" path="res://scripts/building_base.gd" id="1_b"]
+[ext_resource type="Material" path="res://assets/materials/neon_green.tres" id="2_m"]
+[sub_resource type="CylinderShape3D" id="s"]
+height = 4.0
+radius = 1.5
+[node name="PowerCell" type="StaticBody3D"]
+script = ExtResource("1_b")
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+radius = 1.5
+height = 4.0
+sides = 16
+material = ExtResource("2_m")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("s")

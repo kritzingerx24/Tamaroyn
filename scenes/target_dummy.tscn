@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://d8j2x4q8q8q"]
+
+[ext_resource type="Script" path="res://scripts/target_dummy.gd" id="1_dummy"]
+
+[sub_resource type="StandardMaterial3D" id="mat_dummy"]
+resource_local_to_scene = true
+albedo_color = Color(0.2, 0.5, 1, 1)
+
+[sub_resource type="BoxMesh" id="mesh_dummy"]
+resource_local_to_scene = true
+material = SubResource("mat_dummy")
+size = Vector3(2, 2, 2)
+
+[sub_resource type="BoxShape3D" id="shape_dummy"]
+size = Vector3(2, 2, 2)
+
+[node name="TargetDummy" type="RigidBody3D"]
+collision_layer = 8
+collision_mask = 7
+mass = 10.0
+script = ExtResource("1_dummy")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("mesh_dummy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("shape_dummy")

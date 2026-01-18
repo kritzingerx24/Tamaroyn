@@ -1,0 +1,51 @@
+[gd_scene load_steps=2 format=3 uid="uid://e8j2x4q8q8q"]
+
+[ext_resource type="Script" path="res://scripts/ui_manager.gd" id="1_ui"]
+
+[node name="HUD" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ui")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Reticle" type="ColorRect" parent="CenterContainer"]
+custom_minimum_size = Vector2(4, 4)
+layout_mode = 2
+color = Color(0, 1, 0, 0.8)
+
+[node name="Panel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -100.0
+offset_right = 250.0
+grow_vertical = 0
+
+[node name="VBox" type="VBoxContainer" parent="Panel"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/VBox"]
+layout_mode = 2
+text = "SHIELD INTEGRITY"
+
+[node name="HealthBar" type="ProgressBar" parent="Panel/VBox"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+value = 50.0
+
+[node name="AmmoLabel" type="Label" parent="Panel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "AUTO: 100"

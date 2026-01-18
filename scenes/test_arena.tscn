@@ -1,0 +1,93 @@
+[gd_scene load_steps=11 format=3 uid="uid://b8j2x4q8q8q"]
+
+[ext_resource type="Script" path="res://scripts/tank_controller.gd" id="1_tank"]
+[ext_resource type="Script" path="res://scripts/camera_chase.gd" id="2_cam"]
+[ext_resource type="Script" path="res://scripts/weapon_system.gd" id="3_wep"]
+[ext_resource type="PackedScene" uid="uid://c8j2x4q8q8q" path="res://scenes/projectile.tscn" id="4_proj_scn"]
+[ext_resource type="PackedScene" uid="uid://d8j2x4q8q8q" path="res://scenes/target_dummy.tscn" id="5_dummy"]
+[ext_resource type="PackedScene" uid="uid://e8j2x4q8q8q" path="res://scenes/ui_hud.tscn" id="6_hud"]
+
+[sub_resource type="StandardMaterial3D" id="mat_floor"]
+albedo_color = Color(0.2, 0.2, 0.2, 1)
+
+[sub_resource type="BoxShape3D" id="shape_floor"]
+size = Vector3(200, 1, 200)
+
+[sub_resource type="BoxMesh" id="mesh_tank"]
+size = Vector3(2, 1, 3)
+
+[sub_resource type="BoxShape3D" id="shape_tank"]
+size = Vector3(2, 1, 3)
+
+[sub_resource type="BoxMesh" id="mesh_pulse"]
+size = Vector3(0.1, 0.1, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_pulse"]
+albedo_color = Color(0, 1, 1, 1)
+emission_enabled = true
+emission = Color(0, 1, 1, 1)
+emission_energy_multiplier = 10.0
+
+[node name="World" type="Node3D"]
+
+[node name="HUD" parent="." instance=ExtResource("6_hud")]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, -0.75, 0.433013, 0, 10, 0)
+shadow_enabled = true
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("1")
+surface_material_override/0 = SubResource("mat_floor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("shape_floor")
+
+# Procedural Floor Mesh (Box)
+[sub_resource id="1"]
+type = "BoxMesh"
+size = Vector3(200, 1, 200)
+
+[node name="PlayerTank" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+collision_layer = 2
+collision_mask = 9
+script = ExtResource("1_tank")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerTank"]
+mesh = SubResource("mesh_tank")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerTank"]
+shape = SubResource("shape_tank")
+
+[node name="SuspensionRay" type="RayCast3D" parent="PlayerTank"]
+target_position = Vector3(0, -5, 0)
+
+[node name="WeaponSystem" type="Node3D" parent="PlayerTank" node_paths=PackedStringArray("muzzle_point")]
+script = ExtResource("3_wep")
+projectile_scene = ExtResource("4_proj_scn")
+muzzle_point = NodePath("Muzzle")
+
+[node name="Muzzle" type="Node3D" parent="PlayerTank/WeaponSystem"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -2)
+
+[node name="PulseBeam" type="MeshInstance3D" parent="PlayerTank/WeaponSystem"]
+visible = false
+mesh = SubResource("mesh_pulse")
+surface_material_override/0 = SubResource("mat_pulse")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 4, 8)
+script = ExtResource("2_cam")
+target_path = NodePath("../PlayerTank")
+
+[node name="TargetDummy" parent="." instance=ExtResource("5_dummy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -20)
+
+[node name="TargetDummy2" parent="." instance=ExtResource("5_dummy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 2, -20)
+
+[node name="TargetDummy3" parent="." instance=ExtResource("5_dummy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 2, -20)

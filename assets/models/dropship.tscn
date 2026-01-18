@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://dropship001"]
+[ext_resource type="Script" path="res://scripts/dropship_ai.gd" id="1_s"]
+[ext_resource type="Material" path="res://assets/materials/hull_dark.tres" id="2_m"]
+[node name="Dropship" type="Node3D"]
+script = ExtResource("1_s")
+[node name="Body" type="CSGBox3D" parent="."]
+size = Vector3(4, 2, 8)
+material = ExtResource("2_m")

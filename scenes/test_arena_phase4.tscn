@@ -1,0 +1,169 @@
+[gd_scene load_steps=15 format=3 uid="uid://b8j2x4q8q8q"]
+
+[ext_resource type="Script" path="res://scripts/tank_controller.gd" id="1_tank"]
+[ext_resource type="Script" path="res://scripts/camera_chase.gd" id="2_cam"]
+[ext_resource type="Script" path="res://scripts/weapon_system.gd" id="3_wep"]
+[ext_resource type="Script" path="res://scripts/uplink_manager.gd" id="4_uplink"]
+[ext_resource type="Script" path="res://scripts/ui_manager.gd" id="5_ui"]
+[ext_resource type="Script" path="res://scripts/hud_overlay.gd" id="6_hud_overlay"]
+[ext_resource type="Script" path="res://scripts/dropship_ai.gd" id="7_ship_ai"]
+
+[ext_resource type="PackedScene" uid="uid://tankmesh001" path="res://assets/models/tank_mesh.tscn" id="8_tankmesh"]
+[ext_resource type="PackedScene" uid="uid://dropship001" path="res://assets/models/dropship.tscn" id="9_shipmesh"]
+[ext_resource type="PackedScene" uid="uid://c8j2x4q8q8q" path="res://scenes/projectile.tscn" id="10_proj"]
+[ext_resource type="PackedScene" uid="uid://p1w3rC3ll" path="res://scenes/power_cell.tscn" id="11_pc"]
+[ext_resource type="PackedScene" uid="uid://turr3tB4s3" path="res://scenes/turret.tscn" id="12_tur"]
+[ext_resource type="PackedScene" uid="uid://r3p4irP4d" path="res://scenes/repair_pad.tscn" id="13_rep"]
+
+[sub_resource type="StandardMaterial3D" id="mat_grid"]
+albedo_color = Color(0.1, 0.1, 0.1, 1)
+metallic = 0.5
+roughness = 0.5
+
+[sub_resource type="BoxShape3D" id="shape_floor"]
+size = Vector3(400, 1, 400)
+
+[sub_resource type="BoxShape3D" id="shape_tank"]
+size = Vector3(2.5, 1, 4)
+
+[node name="World" type="Node3D"]
+
+[node name="UplinkManager" type="Node3D" parent="."]
+script = ExtResource("4_uplink")
+tank_path = NodePath("../PlayerTank")
+dropship_scene = ExtResource("9_shipmesh")
+buildings = Array[PackedScene]([ExtResource("11_pc"), ExtResource("12_tur"), ExtResource("13_rep")])
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 0, 20, 0)
+shadow_enabled = true
+
+[node name="Floor" type="StaticBody3D" parent="."]
+collision_mask = 7
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("shape_floor")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Floor"]
+size = Vector3(400, 1, 400)
+material = SubResource("mat_grid")
+
+[node name="Wall1" type="CSGBox3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 200)
+size = Vector3(400, 10, 10)
+material = SubResource("mat_grid")
+
+[node name="Wall2" type="CSGBox3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, -200)
+size = Vector3(400, 10, 10)
+material = SubResource("mat_grid")
+
+[node name="PlayerTank" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+collision_layer = 2
+collision_mask = 9
+script = ExtResource("1_tank")
+
+[node name="Visuals" parent="PlayerTank" instance=ExtResource("8_tankmesh")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerTank"]
+shape = SubResource("shape_tank")
+
+[node name="SuspensionRay" type="RayCast3D" parent="PlayerTank"]
+target_position = Vector3(0, -5, 0)
+
+[node name="WeaponSystem" type="Node3D" parent="PlayerTank" node_paths=PackedStringArray("muzzle_point")]
+script = ExtResource("3_wep")
+projectile_scene = ExtResource("10_proj")
+muzzle_point = NodePath("../Visuals/TurretPivot/MuzzlePoint")
+
+[node name="PulseBeam" type="MeshInstance3D" parent="PlayerTank/WeaponSystem"]
+visible = false
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.906308, 0.422618, 0, -0.422618, 0.906308, 0, 8, 12)
+script = ExtResource("2_cam")
+target_path = NodePath("../PlayerTank")
+
+[node name="HUD" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_ui")
+tank_path = NodePath("../PlayerTank")
+
+[node name="Crosshair" type="ColorRect" parent="HUD"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 2.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 1, 0, 0.5)
+
+[node name="Panel" type="PanelContainer" parent="HUD"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -90.0
+offset_right = 250.0
+grow_vertical = 0
+
+[node name="VBox" type="VBoxContainer" parent="HUD/Panel"]
+layout_mode = 2
+
+[node name="HealthBar" type="ProgressBar" parent="HUD/Panel/VBox"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+value = 100.0
+
+[node name="AmmoLabel" type="Label" parent="HUD/Panel/VBox"]
+layout_mode = 2
+text = "AMMO: 100"
+
+[node name="Overlay" type="Control" parent="HUD"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("6_hud_overlay")
+
+[node name="UplinkMenu" type="ColorRect" parent="HUD/Overlay"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -100.0
+offset_right = 150.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0.1, 0, 0.8)
+
+[node name="Label" type="Label" parent="HUD/Overlay/UplinkMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="menu_toggled" from="UplinkManager" to="HUD/Overlay" method="toggle_menu"]

@@ -1,0 +1,56 @@
+[gd_scene load_steps=3 format=3 uid="uid://tankmesh002"]
+
+[ext_resource type="Material" path="res://assets/materials/hull_dark.tres" id="1_mat"]
+[ext_resource type="Material" path="res://assets/materials/neon_green.tres" id="2_mat"]
+
+[node name="TankMesh" type="Node3D"]
+
+[node name="HoverChassis" type="CSGCombiner3D" parent="."]
+
+[node name="PontoonLeft" type="CSGBox3D" parent="HoverChassis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 0, 0)
+size = Vector3(1.2, 1.0, 5.0)
+material = ExtResource("1_mat")
+
+[node name="PontoonRight" type="CSGBox3D" parent="HoverChassis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 0, 0)
+size = Vector3(1.2, 1.0, 5.0)
+material = ExtResource("1_mat")
+
+[node name="CentralBody" type="CSGBox3D" parent="HoverChassis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
+size = Vector3(2.4, 0.8, 4.0)
+material = ExtResource("1_mat")
+
+[node name="Cockpit" type="CSGBox3D" parent="HoverChassis"]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 0.8, -1.0)
+size = Vector3(1.5, 0.6, 1.5)
+material = ExtResource("2_mat")
+
+[node name="EngineGlowL" type="CSGBox3D" parent="HoverChassis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 0, 2.5)
+size = Vector3(0.8, 0.6, 0.1)
+material = ExtResource("2_mat")
+
+[node name="EngineGlowR" type="CSGBox3D" parent="HoverChassis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 0, 2.5)
+size = Vector3(0.8, 0.6, 0.1)
+material = ExtResource("2_mat")
+
+[node name="TurretPivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0.5)
+
+[node name="TurretHead" type="CSGCombiner3D" parent="TurretPivot"]
+
+[node name="Box" type="CSGBox3D" parent="TurretPivot/TurretHead"]
+size = Vector3(1.2, 0.6, 1.5)
+material = ExtResource("1_mat")
+
+[node name="Barrel" type="CSGCylinder3D" parent="TurretPivot/TurretHead"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -1.5)
+radius = 0.15
+height = 2.5
+material = ExtResource("1_mat")
+
+[node name="MuzzlePoint" type="Node3D" parent="TurretPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.8)
