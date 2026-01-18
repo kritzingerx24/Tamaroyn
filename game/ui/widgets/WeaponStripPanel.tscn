@@ -1,8 +1,0 @@
-[gd_scene load_steps=2 format=3]
-
-[ext_resource type="Script" path="res://game/ui/widgets/WeaponStripPanel.gd" id="1_ws"]
-
-[node name="WeaponPanel" type="Control"]
-custom_minimum_size = Vector2(150, 58)
-mouse_filter = 2
-script = ExtResource("1_ws")

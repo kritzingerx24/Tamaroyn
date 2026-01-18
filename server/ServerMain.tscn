@@ -1,8 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://d4c68xk5p1p1n"]
-
-[ext_resource type="Script" uid="uid://dce8r42jer32e" path="res://server/ServerMain.gd" id="1_07lbu"]
-
-[node name="ServerMain" type="Node3D"]
-script = ExtResource("1_07lbu")
-
-[node name="World" type="Node3D" parent="."]
