@@ -1,8 +1,8 @@
 [config]
 
-name="Tamaroyn Phase 5"
-description="Phase 5: High Fidelity Visuals & Terrain"
-run/main_scene="res://scenes/test_arena_phase5.tscn"
+name="Tamaroyn Phase 6"
+description="Phase 6: Skirmish (AI & Radar)"
+run/main_scene="res://scenes/test_arena_phase6.tscn"
 features=PackedStringArray("4.3", "Forward Plus")
 
 [input]
@@ -39,10 +39,6 @@ select_weapon_2={
 "deadzone": 0.5,
 "events": [Object(InputEventKey,"keycode":50,"script":null)]
 }
-select_weapon_3={
-"deadzone": 0.5,
-"events": [Object(InputEventKey,"keycode":51,"script":null)]
-}
 toggle_uplink={
 "deadzone": 0.5,
 "events": [Object(InputEventKey,"keycode":66,"script":null)]
@@ -57,4 +53,4 @@ cycle_sky={
 3d_physics/layer_2="Player"
 3d_physics/layer_3="Projectile"
 3d_physics/layer_4="Enemy"
-3d_physics/layer_5="Power"
+3d_physics/layer_10="RadarOnly"

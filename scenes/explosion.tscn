@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://explode"]
+
+[ext_resource type="Script" path="res://scripts/explosion.gd" id="1_exp"]
+
+[sub_resource type="StandardMaterial3D" id="mat_exp"]
+albedo_color = Color(1, 0.5, 0, 1)
+emission_enabled = true
+emission = Color(1, 0.2, 0, 1)
+emission_energy_multiplier = 5.0
+billboard_mode = 3
+
+[sub_resource type="QuadMesh" id="mesh_exp"]
+material = SubResource("mat_exp")
+size = Vector2(2, 2)
+
+[sub_resource type="Curve" id="curve_exp"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+
+[node name="Explosion" type="Node3D"]
+script = ExtResource("1_exp")
+
+[node name="Particles" type="CPUParticles3D" parent="."]
+emitting = false
+amount = 20
+one_shot = true
+explosiveness = 1.0
+mesh = SubResource("mesh_exp")
+direction = Vector3(0, 1, 0)
+spread = 180.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 5.0
+initial_velocity_max = 10.0
+scale_amount_curve = SubResource("curve_exp")

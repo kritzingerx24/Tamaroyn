@@ -1,14 +1,12 @@
-[gd_scene load_steps=4 format=3 uid="uid://turr3tB4s3"]
+[gd_scene load_steps=3 format=3 uid="uid://turr3tB4s3"]
 [ext_resource type="Script" path="res://scripts/building_base.gd" id="1_b"]
-[ext_resource type="Material" path="res://assets/materials/hull_dark.tres" id="2_m"]
 [sub_resource type="BoxShape3D" id="s"]
 size = Vector3(2, 4, 2)
 [node name="Turret" type="StaticBody3D"]
 script = ExtResource("1_b")
-[node name="CSGBox3D" type="CSGBox3D" parent="."]
+[node name="CSG" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 size = Vector3(2, 4, 2)
-material = ExtResource("2_m")
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="C" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 shape = SubResource("s")
