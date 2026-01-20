@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/darklight.gd" id="1_scr"]
+[ext_resource type="AudioStream" path="res://assets/audio/darklight.wav" id="2_snd"]
+
+[sub_resource type="PrismMesh" id="mesh_dl"]
+size = Vector3(3, 4, 3)
+
+[sub_resource type="BoxShape3D" id="shape_dl"]
+size = Vector3(3, 4, 3)
+
+[sub_resource type="SphereShape3D" id="shape_area"]
+radius = 30.0
+
+[node name="Darklight" type="StaticBody3D"]
+script = ExtResource("1_scr")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+mesh = SubResource("mesh_dl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("shape_dl")
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("shape_area")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("2_snd")
+unit_size = 15.0
+max_db = -5.0
+autoplay = true
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]

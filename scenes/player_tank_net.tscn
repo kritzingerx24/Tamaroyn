@@ -1,0 +1,142 @@
+[gd_scene load_steps=22 format=3]
+
+[ext_resource type="Script" path="res://scripts/player_net_controller.gd" id="1_ctrl"]
+[ext_resource type="PackedScene" path="res://assets/models/tank_mesh_v2.tscn" id="2_mesh"]
+[ext_resource type="Script" path="res://scripts/weapon_system_net.gd" id="4_wep"]
+[ext_resource type="PackedScene" path="res://scenes/pulse_shell.tscn" id="5_proj"]
+[ext_resource type="PackedScene" path="res://scenes/missile.tscn" id="5_missile"]
+[ext_resource type="PackedScene" path="res://scenes/flare.tscn" id="5_flare"]
+[ext_resource type="PackedScene" path="res://scenes/mine.tscn" id="5_mine"]
+[ext_resource type="PackedScene" path="res://scenes/caltrop.tscn" id="5_caltrop"]
+[ext_resource type="AudioStream" path="res://assets/audio/engine_loop.wav" id="6_snd_eng"]
+[ext_resource type="AudioStream" path="res://assets/audio/shoot_tank.wav" id="7_snd_sht"]
+[ext_resource type="AudioStream" path="res://assets/audio/cargo.wav" id="8_carg"]
+[ext_resource type="AudioStream" path="res://assets/audio/lock.wav" id="9_lock"]
+[ext_resource type="AudioStream" path="res://assets/audio/drop_mine.wav" id="10_drop"]
+[ext_resource type="AudioStream" path="res://assets/audio/piercer.wav" id="11_prc"]
+[ext_resource type="PackedScene" path="res://scenes/spectator.tscn" id="12_spec"]
+
+[sub_resource type="BoxShape3D" id="shape_tank"]
+size = Vector3(2.5, 1, 4)
+
+[sub_resource type="SceneReplicationConfig" id="rep_config"]
+properties/0/path = NodePath(".:position"); properties/0/spawn = true; properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation"); properties/1/spawn = true; properties/1/replication_mode = 1
+properties/2/path = NodePath(".:linear_velocity"); properties/2/spawn = true; properties/2/replication_mode = 1
+properties/3/path = NodePath(".:team"); properties/3/spawn = true; properties/3/replication_mode = 2
+properties/4/path = NodePath(".:current_energy"); properties/4/spawn = true; properties/4/replication_mode = 1
+properties/5/path = NodePath(".:throttle_idx"); properties/5/spawn = true; properties/5/replication_mode = 2
+properties/6/path = NodePath(".:is_cloaked"); properties/6/spawn = true; properties/6/replication_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="mat_dust"]
+transparency = 1
+albedo_color = Color(0.6, 0.55, 0.5, 0.4)
+billboard_mode = 3
+vertex_color_use_as_albedo = true
+
+[sub_resource type="QuadMesh" id="mesh_dust"]
+material = SubResource("mat_dust")
+size = Vector2(0.8, 0.8)
+
+[sub_resource type="StandardMaterial3D" id="mat_flash"]
+emission_enabled = true
+emission = Color(1, 0.8, 0.2, 1)
+emission_energy_multiplier = 5.0
+
+[sub_resource type="SphereMesh" id="mesh_flash"]
+material = SubResource("mat_flash")
+radius = 0.3
+height = 0.6
+
+[node name="PlayerTank" type="RigidBody3D" groups=["player", "tank"]]
+collision_layer = 2
+collision_mask = 35
+mass = 50.0
+linear_damp = 0.5
+angular_damp = 2.0
+script = ExtResource("1_ctrl")
+max_health = 400
+move_speed = 50.0
+acceleration = 60.0
+flare_scene = ExtResource("5_flare")
+spectator_scene = ExtResource("12_spec")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("rep_config")
+
+[node name="Visuals" parent="." instance=ExtResource("2_mesh")]
+
+[node name="ExhaustL" type="CPUParticles3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 0, 2.5)
+emitting = false
+amount = 16
+lifetime = 0.8
+mesh = SubResource("mesh_dust")
+gravity = Vector3(0, 2, 0)
+initial_velocity_min = 2.0
+initial_velocity_max = 4.0
+direction = Vector3(0, 0, 1)
+spread = 20.0
+
+[node name="ExhaustR" type="CPUParticles3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 0, 2.5)
+emitting = false
+amount = 16
+lifetime = 0.8
+mesh = SubResource("mesh_dust")
+gravity = Vector3(0, 2, 0)
+initial_velocity_min = 2.0
+initial_velocity_max = 4.0
+direction = Vector3(0, 0, 1)
+spread = 20.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("shape_tank")
+
+[node name="SuspensionRay" type="RayCast3D" parent="."]
+target_position = Vector3(0, -5, 0)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.906308, 0.422618, 0, -0.422618, 0.906308, 0, 8, 12)
+
+[node name="EngineSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("6_snd_eng")
+unit_size = 5.0
+max_db = -5.0
+autoplay = true
+
+[node name="CargoSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_carg")
+
+[node name="WeaponSystem" type="Node3D" parent="." node_paths=PackedStringArray("muzzle_point", "drop_point", "shoot_sound", "lock_sound", "drop_sound")]
+script = ExtResource("4_wep")
+projectile_scene = ExtResource("5_proj")
+missile_scene = ExtResource("5_missile")
+mine_scene = ExtResource("5_mine")
+caltrop_scene = ExtResource("5_caltrop")
+flare_scene = ExtResource("5_flare")
+muzzle_point = NodePath("../Visuals/TurretPivot/MuzzlePoint")
+drop_point = NodePath("DropPoint")
+shoot_sound = NodePath("ShootSound")
+lock_sound = NodePath("LockSound")
+drop_sound = NodePath("DropSound")
+
+[node name="ShootSound" type="AudioStreamPlayer3D" parent="WeaponSystem"]
+stream = ExtResource("7_snd_sht")
+
+[node name="LockSound" type="AudioStreamPlayer3D" parent="WeaponSystem"]
+stream = ExtResource("9_lock")
+
+[node name="DropSound" type="AudioStreamPlayer3D" parent="WeaponSystem"]
+stream = ExtResource("10_drop")
+
+[node name="PiercerSound" type="AudioStreamPlayer3D" parent="WeaponSystem"]
+stream = ExtResource("11_prc")
+
+[node name="DropPoint" type="Node3D" parent="WeaponSystem"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 2.5)
+
+[node name="MuzzleFlash" type="MeshInstance3D" parent="WeaponSystem"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -3)
+visible = false
+mesh = SubResource("mesh_flash")

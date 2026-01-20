@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://strat_missile"]
+
+[ext_resource type="Script" path="res://scripts/strategic_missile.gd" id="1_scr"]
+[ext_resource type="PackedScene" uid="uid://explode" path="res://scenes/explosion.tscn" id="2_exp"]
+
+[sub_resource type="CapsuleMesh" id="mesh_mis"]
+radius = 1.0
+height = 4.0
+
+[sub_resource type="CapsuleShape3D" id="shape_mis"]
+radius = 1.0
+height = 4.0
+
+[node name="StrategicMissile" type="RigidBody3D"]
+collision_layer = 4
+collision_mask = 3
+mass = 100.0
+gravity_scale = 0.0
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("1_scr")
+explosion_scene = ExtResource("2_exp")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("mesh_mis")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+shape = SubResource("shape_mis")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

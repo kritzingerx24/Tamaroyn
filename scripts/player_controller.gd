@@ -30,6 +30,7 @@ func handle_turret_aim():
 		turret_node.global_transform = turret_node.global_transform.interpolate_with(target_xform, 0.1)
 
 func get_aim_point() -> Vector3:
+	if !camera: return Vector3.ZERO
 	var mouse_pos = get_viewport().get_mouse_position()
 	var ray_origin = camera.project_ray_origin(mouse_pos)
 	var ray_end = ray_origin + camera.project_ray_normal(mouse_pos) * 2000.0

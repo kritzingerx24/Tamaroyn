@@ -1,0 +1,129 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://game/ui/widgets/BuildPanel.gd" id="1_bp"]
+
+[node name="BuildPanel" type="Panel"]
+custom_minimum_size = Vector2(360, 120)
+script = ExtResource("1_bp")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+theme_override_constants/separation = 4
+
+[node name="PowerCell" type="HBoxContainer" parent="VBox"]
+theme_override_constants/separation = 6
+
+[node name="Icon" type="ColorRect" parent="VBox/PowerCell"]
+custom_minimum_size = Vector2(14, 14)
+
+[node name="Key" type="Label" parent="VBox/PowerCell"]
+custom_minimum_size = Vector2(26, 0)
+theme_override_font_sizes/font_size = 14
+text = "B"
+
+[node name="Name" type="Label" parent="VBox/PowerCell"]
+custom_minimum_size = Vector2(120, 0)
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
+text = "POWERCELL"
+
+[node name="Cost" type="Label" parent="VBox/PowerCell"]
+custom_minimum_size = Vector2(34, 0)
+horizontal_alignment = 2
+theme_override_font_sizes/font_size = 14
+text = "x1"
+
+[node name="Bar" type="ProgressBar" parent="VBox/PowerCell"]
+custom_minimum_size = Vector2(90, 14)
+size_flags_horizontal = 3
+max_value = 1.0
+value = 1.0
+show_percentage = false
+
+[node name="State" type="Label" parent="VBox/PowerCell"]
+custom_minimum_size = Vector2(70, 0)
+horizontal_alignment = 2
+theme_override_font_sizes/font_size = 14
+text = "READY"
+
+[node name="Turret" type="HBoxContainer" parent="VBox"]
+theme_override_constants/separation = 6
+
+[node name="Icon" type="ColorRect" parent="VBox/Turret"]
+custom_minimum_size = Vector2(14, 14)
+
+[node name="Key" type="Label" parent="VBox/Turret"]
+custom_minimum_size = Vector2(26, 0)
+theme_override_font_sizes/font_size = 14
+text = "T"
+
+[node name="Name" type="Label" parent="VBox/Turret"]
+custom_minimum_size = Vector2(120, 0)
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
+text = "TURRET"
+
+[node name="Cost" type="Label" parent="VBox/Turret"]
+custom_minimum_size = Vector2(34, 0)
+horizontal_alignment = 2
+theme_override_font_sizes/font_size = 14
+text = "x1"
+
+[node name="Bar" type="ProgressBar" parent="VBox/Turret"]
+custom_minimum_size = Vector2(90, 14)
+size_flags_horizontal = 3
+max_value = 1.0
+value = 1.0
+show_percentage = false
+
+[node name="State" type="Label" parent="VBox/Turret"]
+custom_minimum_size = Vector2(70, 0)
+horizontal_alignment = 2
+theme_override_font_sizes/font_size = 14
+text = "READY"
+
+[node name="Repair" type="HBoxContainer" parent="VBox"]
+theme_override_constants/separation = 6
+
+[node name="Icon" type="ColorRect" parent="VBox/Repair"]
+custom_minimum_size = Vector2(14, 14)
+
+[node name="Key" type="Label" parent="VBox/Repair"]
+custom_minimum_size = Vector2(26, 0)
+theme_override_font_sizes/font_size = 14
+text = "R"
+
+[node name="Name" type="Label" parent="VBox/Repair"]
+custom_minimum_size = Vector2(120, 0)
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
+text = "REPAIR"
+
+[node name="Cost" type="Label" parent="VBox/Repair"]
+custom_minimum_size = Vector2(34, 0)
+horizontal_alignment = 2
+theme_override_font_sizes/font_size = 14
+text = "x1"
+
+[node name="Bar" type="ProgressBar" parent="VBox/Repair"]
+custom_minimum_size = Vector2(90, 14)
+size_flags_horizontal = 3
+max_value = 1.0
+value = 0.0
+show_percentage = false
+
+[node name="State" type="Label" parent="VBox/Repair"]
+custom_minimum_size = Vector2(70, 0)
+horizontal_alignment = 2
+theme_override_font_sizes/font_size = 14
+text = "--"
+
+[node name="Hint" type="Label" parent="VBox"]
+theme_override_font_sizes/font_size = 13
+text = ""

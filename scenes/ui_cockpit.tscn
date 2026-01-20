@@ -1,5 +1,8 @@
-[gd_scene format=3 uid="uid://cockpithud"]
-[node name="CockpitOverlay" type="Control"]
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui_hud_net.gd" id="1_scr"]
+
+[node name="CockpitOverlay" type="Control" groups=["hud"]]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -7,30 +10,91 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-[node name="TopBar" type="ColorRect" parent="."]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 40.0
-color = Color(0, 0.2, 0, 0.8)
+script = ExtResource("1_scr")
+
 [node name="BottomBar" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -120.0
-color = Color(0, 0.1, 0, 0.9)
-[node name="Label" type="Label" parent="BottomBar"]
+offset_top = -150.0
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(0, 0, 0, 0.5)
+
+[node name="LeftPanel" type="Panel" parent="BottomBar"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 150.0
+grow_vertical = 2
+
+[node name="RadarContainer" type="SubViewportContainer" parent="BottomBar/LeftPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="BottomBar/LeftPanel/RadarContainer"]
+handle_input_locally = false
+size = Vector2i(150, 150)
+render_target_update_mode = 4
+
+[node name="RadarCamera" type="Camera3D" parent="BottomBar/LeftPanel/RadarContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 100, 0)
+projection = 1
+size = 200.0
+
+[node name="CenterPanel" type="CenterContainer" parent="BottomBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="StatusLabel" type="Label" parent="BottomBar/CenterPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "LOADING SYSTEMS..."
+horizontal_alignment = 1
+
+[node name="LockIndicator" type="Control" parent="."]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Box" type="ReferenceRect" parent="LockIndicator"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -100.0
-offset_top = -11.5
-offset_right = 100.0
-offset_bottom = 11.5
-text = "SYSTEMS ONLINE"
-horizontal_alignment = 1
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+border_color = Color(1, 0, 0, 1)
+border_width = 2.0
+editor_only = false
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HitMarker" type="Label" parent="CenterContainer"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_font_sizes/font_size = 32
+text = "X"

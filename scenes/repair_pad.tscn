@@ -1,18 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://r3p4irP4d"]
 [ext_resource type="Script" path="res://scripts/pad.gd" id="1_pad"]
-[sub_resource type="BoxShape3D" id="s"]
-size = Vector3(6, 0.5, 6)
-[node name="RepairPad" type="StaticBody3D"]
-script = ExtResource("1_pad")
-[node name="CSG" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-size = Vector3(6, 0.5, 6)
-[node name="C" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-shape = SubResource("s")
-[node name="A" type="Area3D" parent="."]
-collision_mask = 2
-[node name="C2" type="CollisionShape3D" parent="A"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-shape = SubResource("s")
+[sub_resource type="BoxShape3D" id="s"]; size = Vector3(6, 0.5, 6)
+[node name="RepairPad" type="StaticBody3D"]; script = ExtResource("1_pad")
+[node name="CSG" type="CSGBox3D" parent="."]; transform = Transform3D(1,0,0,0,1,0,0,0,1,0,0.25,0); size = Vector3(6, 0.5, 6)
+[node name="C" type="CollisionShape3D" parent="."]; transform = Transform3D(1,0,0,0,1,0,0,0,1,0,0.25,0); shape = SubResource("s")
+[node name="A" type="Area3D" parent="."]; collision_mask = 2
+[node name="C2" type="CollisionShape3D" parent="A"]; transform = Transform3D(1,0,0,0,1,0,0,0,1,0,1,0); shape = SubResource("s")
 [connection signal="body_entered" from="A" to="." method="_on_area_body_entered"]

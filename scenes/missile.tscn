@@ -1,0 +1,56 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/missile.gd" id="1_scr"]
+[ext_resource type="PackedScene" path="res://scenes/explosion.tscn" id="2_exp"]
+[ext_resource type="AudioStream" path="res://assets/audio/missile_launch.wav" id="3_snd"]
+
+[sub_resource type="StandardMaterial3D" id="mat_missile"]
+albedo_color = Color(1, 0.2, 0, 1)
+emission_enabled = true
+emission = Color(1, 0.5, 0, 1)
+
+[sub_resource type="CapsuleMesh" id="mesh_missile"]
+material = SubResource("mat_missile")
+radius = 0.2
+height = 1.5
+
+[sub_resource type="CapsuleShape3D" id="shape_missile"]
+radius = 0.25
+height = 1.6
+
+[sub_resource type="StandardMaterial3D" id="mat_trail"]
+transparency = 1
+albedo_color = Color(0.8, 0.8, 0.8, 0.5)
+billboard_mode = 3
+
+[node name="Missile" type="RigidBody3D" groups=["missile"]]
+collision_layer = 4
+collision_mask = 3
+gravity_scale = 0.0
+script = ExtResource("1_scr")
+explosion_scene = ExtResource("2_exp")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("mesh_missile")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+shape = SubResource("shape_missile")
+
+[node name="LaunchSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("3_snd")
+autoplay = true
+max_db = 5.0
+doppler_tracking = 2
+
+[node name="TrailParticles" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.8)
+amount = 20
+lifetime = 0.5
+local_coords = false
+mesh = SubResource("mesh_missile")
+gravity = Vector3(0, 0, 0)
+material_override = SubResource("mat_trail")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

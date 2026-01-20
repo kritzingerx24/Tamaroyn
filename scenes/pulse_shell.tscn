@@ -1,0 +1,11 @@
+[gd_scene load_steps=6 format=3 uid="uid://pulse_shell"]
+[ext_resource type="Script" path="res://scripts/pulse_shell.gd" id="1_scr"]
+[ext_resource type="PackedScene" uid="uid://explode" path="res://scenes/explosion.tscn" id="2_exp"]
+[sub_resource type="StandardMaterial3D" id="mat_shell"]; albedo_color = Color(1, 0.5, 0, 1); emission_enabled = true; emission = Color(1, 0.2, 0, 1); emission_energy_multiplier = 5.0
+[sub_resource type="SphereMesh" id="mesh_shell"]; material = SubResource("mat_shell"); radius = 0.4; height = 0.8
+[sub_resource type="SphereShape3D" id="shape_shell"]; radius = 0.4
+[node name="PulseShell" type="RigidBody3D"]
+collision_layer = 4; collision_mask = 3; gravity_scale = 0.5; contact_monitor = true; max_contacts_reported = 1; script = ExtResource("1_scr"); explosion_scene = ExtResource("2_exp")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]; mesh = SubResource("mesh_shell")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]; shape = SubResource("shape_shell")
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

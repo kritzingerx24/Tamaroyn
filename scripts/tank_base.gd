@@ -7,6 +7,10 @@ signal died()
 @export var max_health: float = 200.0
 var current_health: float
 
+@export_group("Audio")
+@export var audio_engine: AudioStreamPlayer3D
+@export var audio_jump: AudioStreamPlayer3D
+
 @export_group("Movement")
 @export var move_speed: float = 40.0
 @export var turn_speed: float = 2.0
@@ -30,14 +34,24 @@ func _ready():
 	angular_damp = 2.0
 	raycast.target_position = Vector3(0, -(hover_height + 2.0), 0)
 	emit_signal("stats_changed", current_health, max_health)
+	
+	if audio_engine:
+		audio_engine.play()
 
 func _physics_process(delta):
-	# Child classes (Player/AI) update inputs before this
 	apply_suspension_force()
 	apply_movement(delta)
+	update_audio()
 	
 	if input_fire:
 		weapon_sys.fire(linear_velocity)
+
+func update_audio():
+	if audio_engine:
+		# Pitch shift based on speed
+		var speed = linear_velocity.length()
+		var target_pitch = clamp(0.8 + (speed / 20.0), 0.8, 1.5)
+		audio_engine.pitch_scale = lerp(audio_engine.pitch_scale, target_pitch, 0.1)
 
 func apply_suspension_force():
 	if raycast.is_colliding():
@@ -54,17 +68,20 @@ func apply_movement(delta):
 		apply_central_force(-transform.basis.z * input_move * move_speed * mass * delta * 60)
 	if input_jump:
 		apply_central_force(Vector3.UP * jump_jet_force * mass * 0.1)
+		if audio_jump and !audio_jump.playing:
+			audio_jump.play()
 
 func take_damage(amount):
 	current_health -= amount
 	emit_signal("stats_changed", current_health, max_health)
+	
+	# Optional: Add hit sound here if desired
+	
 	if current_health <= 0:
 		die()
 
 func die():
-	print("Tank Destroyed")
 	emit_signal("died")
-	# Spawn explosion (handled by spawner or self)
 	queue_free()
 
 func repair(amount):

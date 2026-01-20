@@ -1,0 +1,98 @@
+[gd_scene load_steps=17 format=3 uid="uid://arena18"]
+
+[ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_gm"]
+[ext_resource type="PackedScene" uid="uid://net_tank" path="res://scenes/player_tank_net.tscn" id="2_tank"]
+[ext_resource type="PackedScene" uid="uid://net_scout" path="res://scenes/scout_net.tscn" id="3_scout"]
+[ext_resource type="PackedScene" uid="uid://bot_tank" path="res://scenes/bot_tank.tscn" id="3_bot"]
+[ext_resource type="Script" path="res://scripts/terrain_gen.gd" id="4_terr"]
+[ext_resource type="Shader" path="res://assets/shaders/grid_terrain.gdshader" id="5_shd"]
+[ext_resource type="Script" path="res://scripts/sky_system.gd" id="6_sky"]
+[ext_resource type="PackedScene" uid="uid://act_turr" path="res://scenes/active_turret.tscn" id="7_turr"]
+[ext_resource type="PackedScene" uid="uid://core" path="res://scenes/base_core.tscn" id="8_core"]
+[ext_resource type="PackedScene" uid="uid://gameover" path="res://scenes/ui_game_over.tscn" id="9_ui"]
+[ext_resource type="Script" path="res://scripts/building_spawner.gd" id="10_bspawn"]
+[ext_resource type="PackedScene" uid="uid://cargo_box" path="res://scenes/cargo_box.tscn" id="11_cbox"]
+[ext_resource type="PackedScene" uid="uid://p1w3rC3ll" path="res://scenes/power_cell.tscn" id="12_pc"]
+[ext_resource type="PackedScene" uid="uid://r3p4irP4d" path="res://scenes/repair_pad.tscn" id="13_rep"]
+[ext_resource type="PackedScene" uid="uid://darklight" path="res://scenes/darklight.tscn" id="14_dl"]
+[ext_resource type="PackedScene" uid="uid://orb_grid" path="res://scenes/orbital_grid.tscn" id="14_orb"]
+[ext_resource type="PackedScene" uid="uid://ui_map" path="res://scenes/ui_map.tscn" id="15_uimap"]
+
+[sub_resource type="Environment" id="env"]
+background_mode = 1
+background_color = Color(0.1, 0.1, 0.15, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.5, 0.5, 0.5, 1)
+
+[sub_resource type="ShaderMaterial" id="mat_grid"]
+render_priority = 0
+shader = ExtResource("5_shd")
+shader_parameter/grid_color = Color(0, 1, 0.2, 1)
+shader_parameter/ground_color = Color(0.05, 0.05, 0.05, 1)
+shader_parameter/grid_scale = 10.0
+shader_parameter/line_thickness = 0.05
+
+[node name="World" type="Node3D" node_paths=PackedStringArray("ui_game_over")]
+script = ExtResource("1_gm")
+tank_scene = ExtResource("2_tank")
+scout_scene = ExtResource("3_scout")
+bot_tank_scene = ExtResource("3_bot")
+ui_game_over = NodePath("UI/GameOver")
+
+[node name="OrbitalGrid" parent="." instance=ExtResource("14_orb")]
+
+[node name="BuildingSpawner" type="Node" parent="."]
+script = ExtResource("10_bspawn")
+cargo_box_scene = ExtResource("11_cbox")
+# Order: Power(0), Turret(1), Repair(2), Darklight(3)
+buildings = Array[PackedScene]([ExtResource("12_pc"), ExtResource("7_turr"), ExtResource("13_rep"), ExtResource("14_dl")])
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://scenes/player_tank_net.tscn", "res://scenes/scout_net.tscn", "res://scenes/bot_tank.tscn", "res://scenes/cargo_box.tscn", "res://scenes/active_turret.tscn", "res://scenes/power_cell.tscn", "res://scenes/repair_pad.tscn", "res://scenes/pulse_shell.tscn", "res://scenes/missile.tscn", "res://scenes/flare.tscn", "res://scenes/mine.tscn", "res://scenes/caltrop.tscn", "res://scenes/darklight.tscn")
+spawn_path = NodePath("..")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("env")
+script = ExtResource("6_sky")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 0, 20, 0)
+shadow_enabled = true
+
+[node name="Terrain" type="StaticBody3D" parent="."]
+collision_mask = 7
+script = ExtResource("4_terr")
+material = SubResource("mat_grid")
+
+[node name="Players" type="Node3D" parent="."]
+
+# --- BASES ---
+
+[node name="RedBase" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -100, 0, 0)
+
+[node name="BaseCore" parent="RedBase" instance=ExtResource("8_core")]
+groups = ["power_cell"]
+
+[node name="Turret" parent="RedBase" instance=ExtResource("7_turr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 15)
+
+[node name="BlueBase" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 0, 0)
+
+[node name="BaseCore" parent="BlueBase" instance=ExtResource("8_core")]
+groups = ["power_cell"]
+team = 1
+
+[node name="Turret" parent="BlueBase" instance=ExtResource("7_turr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 15)
+team = 1
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="GameOver" parent="UI" instance=ExtResource("9_ui")]
+visible = false
+
+[node name="MapScreen" parent="UI" node_paths=PackedStringArray("grid_path") instance=ExtResource("15_uimap")]
+visible = false
+grid_path = NodePath("../../OrbitalGrid")

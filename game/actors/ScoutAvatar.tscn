@@ -1,0 +1,55 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://game/actors/ScoutAvatar.gd" id="1_sc0ut"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_body"]
+size = Vector3(5.5, 2.4, 8.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_nose"]
+size = Vector3(3.2, 1.3, 2.6)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wing"]
+size = Vector3(3.8, 0.35, 4.4)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_turret"]
+top_radius = 1.1
+bottom_radius = 1.1
+height = 0.8
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_target"]
+top_radius = 5.0
+bottom_radius = 5.0
+height = 0.2
+
+[node name="ScoutAvatar" type="Node3D"]
+script = ExtResource("1_sc0ut")
+
+[node name="Body" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_body")
+
+[node name="Nose" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.3, 4.3)
+mesh = SubResource("BoxMesh_nose")
+
+[node name="WingL" type="MeshInstance3D" parent="."]
+position = Vector3(-4.2, 0.3, 0)
+mesh = SubResource("BoxMesh_wing")
+
+[node name="WingR" type="MeshInstance3D" parent="."]
+position = Vector3(4.2, 0.3, 0)
+mesh = SubResource("BoxMesh_wing")
+
+[node name="Turret" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.8, -1.0)
+mesh = SubResource("CylinderMesh_turret")
+
+[node name="TargetMarker" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.0, 0)
+visible = false
+mesh = SubResource("CylinderMesh_target")
+
+[node name="Label3D" type="Label3D" parent="."]
+position = Vector3(0, 5.0, 0)
+billboard = 1
+text = "?"
+font_size = 28

@@ -1,0 +1,15 @@
+[gd_scene load_steps=5 format=3 uid="uid://cargo_box"]
+[ext_resource type="Script" path="res://scripts/cargo_box.gd" id="1_scr"]
+[sub_resource type="BoxShape3D" id="shape_box"]; size = Vector3(2, 2, 2)
+[sub_resource type="BoxMesh" id="mesh_box"]; size = Vector3(2, 2, 2)
+[sub_resource type="SceneReplicationConfig" id="rep_box"]
+properties/0/path = NodePath(".:position"); properties/0/spawn = true; properties/0/replication_mode = 1
+properties/1/path = NodePath(".:building_type"); properties/1/spawn = true; properties/1/replication_mode = 2
+[node name="CargoBox" type="RigidBody3D"]
+collision_layer = 32; collision_mask = 3; mass = 10.0; script = ExtResource("1_scr")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]; shape = SubResource("shape_box")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]; mesh = SubResource("mesh_box")
+[node name="Area3D" type="Area3D" parent="."]; collision_mask = 2
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]; shape = SubResource("shape_box")
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]; replication_config = SubResource("rep_box")
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://explode"]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scripts/explosion.gd" id="1_exp"]
+[ext_resource type="AudioStream" path="res://assets/audio/explosion.wav" id="2_snd"]
 
 [sub_resource type="StandardMaterial3D" id="mat_exp"]
 albedo_color = Color(1, 0.5, 0, 1)
@@ -11,7 +12,7 @@ billboard_mode = 3
 
 [sub_resource type="QuadMesh" id="mesh_exp"]
 material = SubResource("mat_exp")
-size = Vector2(2, 2)
+size = Vector2(4, 4)
 
 [sub_resource type="Curve" id="curve_exp"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -31,3 +32,8 @@ gravity = Vector3(0, 0, 0)
 initial_velocity_min = 5.0
 initial_velocity_max = 10.0
 scale_amount_curve = SubResource("curve_exp")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("2_snd")
+unit_size = 20.0
+max_db = 3.0

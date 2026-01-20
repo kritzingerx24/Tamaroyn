@@ -1,0 +1,108 @@
+[gd_scene load_steps=2 format=3 uid="uid://menu"]
+
+[ext_resource type="Script" path="res://scripts/ui_menu.gd" id="1_scr"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_scr")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -200.0
+offset_right = 200.0
+offset_bottom = 200.0
+
+[node name="VBox" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+alignment = 1
+
+[node name="Label" type="Label" parent="Panel/VBox"]
+layout_mode = 2
+text = "TAMAROYN"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="Panel/VBox"]
+layout_mode = 2
+
+[node name="HBoxTeam" type="HBoxContainer" parent="Panel/VBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="Panel/VBox/HBoxTeam"]
+layout_mode = 2
+text = "TEAM: "
+
+[node name="TeamOpt" type="OptionButton" parent="Panel/VBox/HBoxTeam"]
+layout_mode = 2
+item_count = 2
+selected = 0
+popup/item_0/text = "RED"
+popup/item_0/id = 0
+popup/item_1/text = "BLUE"
+popup/item_1/id = 1
+
+[node name="HBoxClass" type="HBoxContainer" parent="Panel/VBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="Panel/VBox/HBoxClass"]
+layout_mode = 2
+text = "CLASS: "
+
+[node name="ClassOpt" type="OptionButton" parent="Panel/VBox/HBoxClass"]
+layout_mode = 2
+item_count = 2
+selected = 0
+popup/item_0/text = "TANK (Heavy)"
+popup/item_0/id = 0
+popup/item_1/text = "SCOUT (Fast)"
+popup/item_1/id = 1
+
+[node name="HBoxMap" type="HBoxContainer" parent="Panel/VBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="Panel/VBox/HBoxMap"]
+layout_mode = 2
+text = "MAP: "
+
+[node name="MapOpt" type="OptionButton" parent="Panel/VBox/HBoxMap"]
+layout_mode = 2
+item_count = 0
+
+[node name="HSeparator2" type="HSeparator" parent="Panel/VBox"]
+layout_mode = 2
+
+[node name="HostBtn" type="Button" parent="Panel/VBox"]
+layout_mode = 2
+text = "HOST GAME"
+
+[node name="JoinBtn" type="Button" parent="Panel/VBox"]
+layout_mode = 2
+text = "JOIN GAME"
+
+[node name="Address" type="LineEdit" parent="Panel/VBox"]
+layout_mode = 2
+text = "127.0.0.1"
+placeholder_text = "IP Address"
+
+[connection signal="pressed" from="Panel/VBox/HostBtn" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="Panel/VBox/JoinBtn" to="." method="_on_join_pressed"]

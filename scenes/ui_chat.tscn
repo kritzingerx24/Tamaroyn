@@ -1,0 +1,29 @@
+[gd_scene load_steps=2 format=3 uid="uid://ui_chat"]
+
+[ext_resource type="Script" path="res://scripts/chat_manager.gd" id="1_scr"]
+
+[node name="Chat" type="Control" groups=["chat_ui"]]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 400.0
+offset_bottom = 300.0
+mouse_filter = 2
+script = ExtResource("1_scr")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 2
+
+[node name="ChatLog" type="VBoxContainer" parent="VBox"]
+layout_mode = 2
+
+[node name="InputLine" type="LineEdit" parent="VBox"]
+layout_mode = 2
+placeholder_text = "Press Enter to chat..."

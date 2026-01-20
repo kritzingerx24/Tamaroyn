@@ -1,0 +1,6 @@
+[gd_scene load_steps=3 format=3 uid="uid://core"]
+[ext_resource type="Script" path="res://scripts/base_core.gd" id="1_scr"]
+[sub_resource type="CylinderShape3D" id="shape_core"]; height = 8.0; radius = 3.0
+[node name="BaseCore" type="StaticBody3D"]; script = ExtResource("1_scr")
+[node name="MeshInstance3D" type="CSGCylinder3D" parent="."]; transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0); radius = 3.0; height = 8.0; sides = 16
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]; transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0); shape = SubResource("shape_core")

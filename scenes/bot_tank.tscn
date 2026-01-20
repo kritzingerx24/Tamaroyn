@@ -1,0 +1,15 @@
+[gd_scene load_steps=9 format=3 uid="uid://bot_tank"]
+[ext_resource type="Script" path="res://scripts/bot_controller.gd" id="1_ctrl"]
+[ext_resource type="PackedScene" uid="uid://tankmesh002" path="res://assets/models/tank_mesh_v2.tscn" id="2_mesh"]
+[ext_resource type="Script" path="res://scripts/weapon_system_net.gd" id="3_wep"]
+[ext_resource type="PackedScene" uid="uid://pulse_shell" path="res://scenes/pulse_shell.tscn" id="4_proj"]
+[ext_resource type="AudioStream" uid="uid://snd_shoot_tank" path="res://assets/audio/shoot_tank.wav" id="5_snd_sht"]
+[sub_resource type="BoxShape3D" id="shape_tank"]; size = Vector3(2.5, 1, 4)
+[sub_resource type="SceneReplicationConfig" id="rep_config"]; properties/0/path = NodePath(".:position"); properties/0/spawn = true; properties/0/replication_mode = 1; properties/1/path = NodePath(".:rotation"); properties/1/spawn = true; properties/1/replication_mode = 1; properties/2/path = NodePath(".:linear_velocity"); properties/2/spawn = true; properties/2/replication_mode = 1; properties/3/path = NodePath(".:team"); properties/3/spawn = true; properties/3/replication_mode = 2; properties/4/path = NodePath(".:is_cloaked"); properties/4/spawn = true; properties/4/replication_mode = 2
+[node name="BotTank" type="RigidBody3D" groups=["player", "tank"]]; collision_layer = 2; collision_mask = 35; mass = 50.0; linear_damp = 0.5; angular_damp = 2.0; script = ExtResource("1_ctrl")
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]; replication_config = SubResource("rep_config")
+[node name="Visuals" parent="." instance=ExtResource("2_mesh")]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]; shape = SubResource("shape_tank")
+[node name="SuspensionRay" type="RayCast3D" parent="."]; target_position = Vector3(0, -5, 0)
+[node name="WeaponSystem" type="Node3D" parent="." node_paths=PackedStringArray("muzzle_point", "shoot_sound")]; script = ExtResource("3_wep"); projectile_scene = ExtResource("4_proj"); muzzle_point = NodePath("../Visuals/TurretPivot/MuzzlePoint"); shoot_sound = NodePath("ShootSound")
+[node name="ShootSound" type="AudioStreamPlayer3D" parent="WeaponSystem"]; stream = ExtResource("5_snd_sht")

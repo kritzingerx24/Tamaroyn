@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://mine"]
+
+[ext_resource type="Script" path="res://scripts/mine.gd" id="1_scr"]
+[ext_resource type="PackedScene" uid="uid://explode" path="res://scenes/explosion.tscn" id="2_exp"]
+
+[sub_resource type="CylinderMesh" id="mesh_mine"]
+top_radius = 0.5
+bottom_radius = 0.6
+height = 0.2
+
+[sub_resource type="CylinderShape3D" id="shape_mine"]
+height = 0.2
+radius = 0.6
+
+[node name="Mine" type="Area3D"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_scr")
+explosion_scene = ExtResource("2_exp")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("mesh_mine")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("shape_mine")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
